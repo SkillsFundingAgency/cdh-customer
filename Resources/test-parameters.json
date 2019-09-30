@@ -3,43 +3,43 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "cosmosDbCollectionId": {
-            "value": "__ApiResourceName__"
+            "value": "customers"
         },
         "cosmosDbDatabaseId": {
-            "value": "__ApiResourceName__"
+            "value": "customers"
         },
         "customerConnectionString": {
-            "value": "__CustomerConnectionString__"
+            "value": "AccountEndpoint=https://dss-foo-shared-cdb.documents.azure.com:443/;AccountKey=not-a-real-key;Database=customers;"
         },
         "environmentName": {
-            "value": "__ReleaseEnvironmentName__"
+            "value": "FOO"
         },
         "functionAppName": {
-            "value": "__FunctionAppName__"
+            "value": "dss-foo-cust-v2-fa"
         },
         "searchServiceName": {
-            "value": "__SearchServiceName__"
+            "value": "dss-foo-shared-sch"
         },
         "searchServiceAdminApiKey": {
-            "value": "__SearchServiceAdminApiKey__"
+            "value": "not-a-real-key"
         },
         "serviceBusConnectionString": {
-            "value": "__ServiceBusConnectionString__"
+            "value": "Endpoint=sb://dss-foo-shared-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=not-a-real-ley"
         },
         "serviceBusQueueName": {
-            "value": "__ServiceBusQueueName__"
+            "value": "dss-contentqueue"
         },
         "sharedAppServicePlanName": {
-            "value": "__SharedAppServicePlanName__"
+            "value": "dss-foo-shared-asp"
         },
         "sharedAppServicePlanResourceGroup": {
-            "value": "__SharedAppServicePlanResourceGroup__"
+            "value": "dss-foo-shared-rg"
         },
         "storageAccountName": {
-            "value": "__SharedStorageAccount__"
+            "value": "dssfooshdarmstr"
         },
         "storageAccountKey": {
-            "value": "__SharedStorageAccountKey__"
+            "value": "not-a-real-key"
         }
     }
 }

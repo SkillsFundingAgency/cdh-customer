@@ -1,108 +1,181 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-  "parameters": {
-    "cosmosDbCollectionId": {
-      "type": "string"
+    "parameters": {
+        "cosmosDbCollectionId": {
+            "type": "string"
+        },
+        "cosmosDbDatabaseId": {
+            "type": "string"
+        },
+        "customerConnectionString": {
+            "type": "string"
+        },
+        "environmentName": {
+            "type": "string"
+        },
+        "functionAppName": {
+            "type": "string"
+        },
+        "searchServiceName": {
+            "type": "string"
+        },
+        "searchServiceAdminApiKey": {
+            "type": "string"
+        },
+        "serviceBusConnectionString": {
+            "type": "string"
+        },
+        "serviceBusQueueName": {
+            "type": "string"
+        },
+        "sharedAppServicePlanName": {
+            "type": "string"
+        },
+        "sharedAppServicePlanResourceGroup": {
+            "type": "string"
+        },
+        "storageAccountName": {
+            "type": "string"
+        },
+        "storageAccountKey": {
+            "type": "string"
+        }
     },
-    "cosmosDbDatabaseId": {
-      "type": "string"
-    },
-    "customerConnectionString": {
-      "type": "string"
-    },
-    "environmentName": {
-      "type": "string"
-    },
-    "functionAppNames": {
-      "type": "array"
-    },
-    "searchServiceName": {
-      "type": "string"
-    },
-    "searchServiceAdminApiKey": {
-      "type": "string"
-    },
-    "serviceBusConnectionString": {
-      "type": "string"
-    },
-    "serviceBusQueueName": {
-      "type": "string"
-    },
-    "sharedAppServicePlanName": {
-      "type": "string"
-    },
-    "sharedAppServicePlanResourceGroup": {
-      "type": "string"
-    },
-    "storageAccountName": {
-      "type": "string"
-    },
-    "storageAccountKey": {
-      "type": "string"
-    },
-    "templateBaseUrl": {
-      "type": "string"
-    }
-  },
     "variables": {
-        "functionAppTemplateUri": "[concat(parameters('templateBaseUrl'), '/deployments/function-app-resources.json')]",
-        "sharedAppServicePlanId": "[resourceId(parameters('sharedAppServicePlanResourceGroup'), 'Microsoft.Web/serverfarms', parameters('sharedAppServicePlanName'))]"
+        "appServiceAppInsightsName": "[concat(variables('ResourcePrefix'), '-ai')]",
+        "buildingBlocksDfcBaseUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
+        "resourcePrefix": "[tolower(concat('dss-', parameters('environmentName'), '-cust'))]",
+        "storageAccountConnectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=', parameters('storageAccountKey'), ';EndpointSuffix=core.windows.net')]"
     },
     "resources": [
         {
-            "name": "[concat('FunctionApp-', parameters('functionAppNames')[copyIndex()])]",
-            "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
+            "name": "[variables('appServiceAppInsightsName')]",
+            "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('functionAppTemplateUri')]",
+                    "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'application-insights.json')]",
                     "contentVersion": "1.0.0.0"
                 },
-              "parameters": {
-                "functionAppName": {
-                  "value": "[parameters('functionAppNames')[copyIndex()]]"
-                },
-                "appServicePlanId": {
-                  "value": "[variables('sharedAppServicePlanId')]"
-                },
-                "configEnvironmentName": {
-                  "value": "[parameters('environmentName')]"
-                },
-                "cosmosDbCollectionId": {
-                  "value": "[parameters('cosmosDbCollectionId')]"
-                },
-                "cosmosDbDatabaseId": {
-                  "value": "[parameters('cosmosDbDatabaseId')]"
-                },
-                "customerConnectionString": {
-                  "value": "[parameters('customerConnectionString')]"
-                },
-                "searchServiceName": {
-                  "value": "[parameters('searchServiceName')]"
-                },
-                "searchServiceAdminApiKey": {
-                  "value": "[parameters('searchServiceAdminApiKey')]"
-                },
-                "serviceBusConnectionString": {
-                  "value": "[parameters('serviceBusConnectionString')]"
-                },
-                "serviceBusQueueName": {
-                  "value": "[parameters('serviceBusQueueName')]"
-                },
-                "storageAccountKey": {
-                  "value": "[parameters('storageAccountKey')]"
-                },
-                "storageAccountName": {
-                  "value": "[parameters('storageAccountName')]"
+                "parameters": {
+                    "appInsightsName": {
+                        "value": "[variables('appServiceAppInsightsName')]"
+                    },
+                    "attachedService": {
+                        "value": ""
+                    }
                 }
-              }
-            },
-            "copy": {
-                "name": "FunctionAppCopy",
-                "count": "[length(parameters('functionAppNames'))]"
             }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "[parameters('functionAppName')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'app-service.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appServiceName": {
+                        "value": "[parameters('functionAppName')]"
+                    },
+                    "appServicePlanName": {
+                        "value": "[parameters('sharedAppServicePlanName')]"
+                    },
+                    "appServicePlanResourceGroup": {
+                        "value": "[parameters('sharedAppServicePlanResourceGroup')]"
+                    },
+                    "appServiceType": {
+                        "value": "function"
+                    },
+                    "deployStagingSlot": {
+                        "value": true
+                    },
+                    "appServiceAppSettings": {
+                        "value": [
+                            {
+                                "name": "EnvironmentName",
+                                "value": "[toUpper(parameters('environmentName'))]"
+                            },
+                            {
+                                "name": "FUNCTIONS_EXTENSION_VERSION",
+                                "value": "~2"
+                            },
+                            {
+                                "name": "MSDEPLOY_RENAME_LOCKED_FILES",
+                                "value": "1"
+                            },
+                            {
+                                "name": "AzureWebJobsStorage",
+                                "value": "[variables('storageAccountConnectionString')]"
+                            },
+                            {
+                                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                                "value": "[reference(concat('microsoft.insights/components/', variables('appServiceAppInsightsName'))).InstrumentationKey]"
+                            },
+                            {
+                                "name": "CollectionId",
+                                "value": "[parameters('cosmosDbCollectionId')]"
+                            },
+                            {
+                                "name": "CustomerConnectionString",
+                                "value": "[parameters('customerConnectionString')]"
+                            },
+                            {
+                                "name": "CustomerSearchIndexName",
+                                "value": "customer-search-index"
+                            },
+                            {
+                                "name": "DatabaseId",
+                                "value": "[parameters('cosmosDbDatabaseId')]"
+                            },
+                            {
+                                "name": "LeaseCollectionName",
+                                "value": "action-lease"
+                            },
+                            {
+                                "name": "LeaseCollectionPrefix",
+                                "value": "actionChangeFeedPrefix"
+                            },
+                            {
+                                "name": "ServiceBusConnectionString",
+                                "value": "[parameters('serviceBusConnectionString')]"
+                            },
+                            {
+                                "name": "ChangeFeedQueueName",
+                                "value": "dss.changefeedqueue"
+                            },
+                            {
+                                "name": "QueueName",
+                                "value": "[parameters('serviceBusQueueName')]"
+                            },
+                            {
+                                "name": "SearchServiceName",
+                                "value": "[parameters('searchServiceName')]"
+                            },
+                            {
+                                "name": "SearchServiceAdminApiKey",
+                                "value": "[parameters('searchServiceAdminApiKey')]"
+                            },
+                            {
+                                "name": "SubscriptionCollectionId",
+                                "value": "subscriptions"
+                            },
+                            {
+                                "name": "SubscriptionDatabaseId",
+                                "value": "subscriptions"
+                            }
+                        ]
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('AppServiceAppInsightsName')]"
+            ]
         }
     ],
     "outputs": {}
