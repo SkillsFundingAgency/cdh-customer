@@ -115,7 +115,7 @@
                             },
                             {
                                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                "value": "[reference(concat('microsoft.insights/components/', variables('appServiceAppInsightsName'))).InstrumentationKey]"
+                                "value": "[reference(variables('appServiceAppInsightsName')).outputs.InstrumentationKey.value]"
                             },
                             {
                                 "name": "CollectionId",
