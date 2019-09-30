@@ -90,7 +90,7 @@
                         "value": "[parameters('sharedAppServicePlanResourceGroup')]"
                     },
                     "appServiceType": {
-                        "value": "function"
+                        "value": "functionapp"
                     },
                     "deployStagingSlot": {
                         "value": true
