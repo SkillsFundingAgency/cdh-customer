@@ -118,6 +118,10 @@
                                 "value": "[reference(variables('appServiceAppInsightsName')).outputs.InstrumentationKey.value]"
                             },
                             {
+                                "name": "SCM_TOUCH_WEBCONFIG_AFTER_DEPLOYMENT",
+                                "value": "0"
+                            },
+                            {
                                 "name": "CollectionId",
                                 "value": "[parameters('cosmosDbCollectionId')]"
                             },
