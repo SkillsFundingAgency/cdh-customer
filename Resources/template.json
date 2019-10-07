@@ -106,20 +106,12 @@
                                 "value": "~2"
                             },
                             {
-                                "name": "MSDEPLOY_RENAME_LOCKED_FILES",
-                                "value": "1"
-                            },
-                            {
                                 "name": "AzureWebJobsStorage",
                                 "value": "[variables('storageAccountConnectionString')]"
                             },
                             {
                                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                                 "value": "[reference(variables('appServiceAppInsightsName')).outputs.InstrumentationKey.value]"
-                            },
-                            {
-                                "name": "SCM_TOUCH_WEBCONFIG_AFTER_DEPLOYMENT",
-                                "value": "0"
                             },
                             {
                                 "name": "CollectionId",
