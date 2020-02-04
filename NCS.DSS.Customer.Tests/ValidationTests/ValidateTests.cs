@@ -151,7 +151,7 @@ namespace NCS.DSS.Customer.Tests.ValidationTests
         [Test]
         public void ValidateTests_ReturnValidationResult_WhenReasonForTerminationIsNotValid()
         {
-            var customer = new Models.Customer { GivenName = "John", FamilyName = "Smith", ReasonForTermination = (ReasonForTermination) 100 };            
+            var customer = new Models.Customer { GivenName = "John", FamilyName = "Smith", ReasonForTermination = (ReasonForTermination) 100, DateOfTermination = DateTime.MinValue };            
 
             var result = _validate.ValidateResource(customer, false);
 
