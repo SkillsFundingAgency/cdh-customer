@@ -21,7 +21,7 @@ namespace NCS.DSS.Customer.SearchCustomerHttpTrigger.Function
 {
     public class SearchCustomerHttpTrigger
     {
-        private readonly ILogger _log;
+        private readonly ILogger<SearchCustomerHttpTrigger> _log;
         private readonly IResourceHelper _resourceHelper;
         private readonly IHttpRequestHelper _httpRequestHelper;
         private readonly ISearchCustomerHttpTriggerService _searchCustomerService;
@@ -29,7 +29,7 @@ namespace NCS.DSS.Customer.SearchCustomerHttpTrigger.Function
         private readonly IJsonHelper _jsonHelper;
         private readonly ILoggerHelper _loggerHelper;
 
-        public SearchCustomerHttpTrigger(ILogger log,
+        public SearchCustomerHttpTrigger(ILogger<SearchCustomerHttpTrigger> log,
              IResourceHelper resourceHelper,
              IHttpRequestHelper httpRequestHelper,
              ISearchCustomerHttpTriggerService searchCustomerService,

@@ -20,7 +20,7 @@ namespace NCS.DSS.Customer.Tests.FunctionTests
     [TestFixture]
     public class SearchCustomerHttpTriggerTests
     {
-        private Mock<ILogger> _log;
+        private Mock<ILogger<SearchCustomerHttpTrigger.Function.SearchCustomerHttpTrigger>> _log;
         private HttpRequest _request;
         private Mock<IResourceHelper> _resourceHelper;
         private IValidate _validate;
@@ -39,7 +39,7 @@ namespace NCS.DSS.Customer.Tests.FunctionTests
             _customer = new Models.Customer();
             _request = new DefaultHttpRequest(new DefaultHttpContext());
 
-            _log = new Mock<ILogger>();
+            _log = new Mock<ILogger<SearchCustomerHttpTrigger.Function.SearchCustomerHttpTrigger>>();
             _resourceHelper = new Mock<IResourceHelper>();
             _validate = new Validate();
             _httpRequestHelper = new Mock<IHttpRequestHelper>();
@@ -49,7 +49,7 @@ namespace NCS.DSS.Customer.Tests.FunctionTests
             _searchIndexClient = new Mock<ISearchIndexClient>();
             _loggerHelper = new Mock<ILoggerHelper>();
             _function = new SearchCustomerHttpTrigger.Function.SearchCustomerHttpTrigger(
-                _log.Object,
+                null,
                 _resourceHelper.Object, 
                 _httpRequestHelper.Object, 
                 _searchCustomerHttpTriggerService.Object, 
